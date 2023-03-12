@@ -1,10 +1,12 @@
 import React from 'react';
+import SearchBar from './SearchBar';
 
-const Main = () => {
+const Main = ({ searchHandler }) => {
   console.log('homepage');
   return (
-    <div className="container h-screen mx-auto">
-      <div className="bg-gray-600">popular car</div>
+    <div className="mx-8 sm:mx-24">
+      <SearchBar searchHandler={searchHandler} />
+      <div>popular car</div>
     </div>
   );
 };
