@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { signOut, signIn } from 'next-auth/react';
+// import { AiFillCar } from 'react-icons/ai';
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { Popover } from '@headlessui/react';

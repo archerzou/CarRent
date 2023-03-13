@@ -12,13 +12,23 @@ const Header = () => {
   const { data: session } = useSession();
   return (
     <div className="flex-col bg-white p-6 mx-2 sm:mx-14">
-      <nav className="flex justify-between">
+      <nav className="flex justify-between items-center">
         <div className="flex text-white mr-6">
           <span className="font-bold text-2xl tracking-tight text-primary">MORENT</span>
         </div>
         <div className="flex items-center">
-          <div>
-            <ul className="hidden sm:flex place-items-end gap-6">
+          <ul className=" hidden sm:flex place-items-end p-4 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0">
+            <li>
+              <a href="/" className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0" aria-current="page">Home</a>
+            </li>
+            <li>
+              <a href="/" className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 d">SearchCars</a>
+            </li>
+            <li>
+              <a href="/" className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 d">AddCar</a>
+            </li>
+          </ul>
+          {/* <ul className="hidden sm:flex place-items-end gap-6">
               <li>
                 <button type="button" className="flex p-1.5 text-sm border-2 rounded-full">
                   <AiFillHeart className="text-lg" />
@@ -42,10 +52,10 @@ const Header = () => {
                   </button>
                 </Link>
               </li>
-            </ul>
-          </div>
+            </ul> */}
           <UserMenu session={session} />
         </div>
+
       </nav>
     </div>
 
