@@ -1,27 +1,34 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
+import { signIn } from 'next-auth/react';
 import { BiLeftArrowAlt } from 'react-icons/bi';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 import Header from '../components/header';
 import Footer from '../components/footer';
+import CustomInput from '../components/customInput';
+import DotLoaderSpinner from '../components/loaders/dotLoader';
+
+const initialvalues = {
+  name: '',
+  email: '',
+  password: '',
+  confPassword: '',
+  success: '',
+  error: '',
+  loginError: '',
+};
 
 const signup = () => {
-  const initialvalues = {
-    name: '',
-    email: '',
-    password: '',
-    confPassword: '',
-    success: '',
-    error: '',
-    loginError: '',
-  };
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(initialvalues);
-  const { name, email, password, confPassword } = user;
+  const { name, email, password, confPassword, success, error } = user;
 
   const handleChange = (e) => {
-    const { type, value } = e.target;
-    setUser({ ...user, [type]: value });
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
   };
 
   const registerValidation = Yup.object({
@@ -46,15 +53,41 @@ const signup = () => {
       .oneOf([Yup.ref('password')], 'Passwords must match.'),
   });
 
+  const signUpHandler = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post('/api/auth/signup', {
+        name,
+        email,
+        password,
+      });
+      setUser({ ...user, error: '', success: data.message });
+      setLoading(false);
+      setTimeout(async () => {
+        const options = {
+          redirect: false,
+          email,
+          password,
+        };
+        const res = await signIn('credentials', options);
+        Router.push('/');
+      }, 2000);
+    } catch (err) {
+      setLoading(false);
+      setUser({ ...user, success: '', error: err.response.data.message });
+    }
+  };
+
   return (
     <>
+      {loading && <DotLoaderSpinner loading={loading} />}
       <Header />
       <div className="flex flex-col items-center justify-center bg-gray_2 p-6 mx-auto">
         <div className="flex items-center">
           <button type="button" className="flex p-2.5 text-lg border-2 hover:border-primary rounded-full">
-            <BiLeftArrowAlt className="text-md sm:text-2xl hover:text-primary" />
+            <BiLeftArrowAlt className="text-sm sm:text-2xl hover:text-primary" />
           </button>
-          <span className="text-md sm:text-2xl ml-4">
+          <span className="text-sm sm:text-2xl ml-4">
             We'd be happy to join us ! <Link href="/" className="text-primary underline underline-offset-8">Go Renting</Link>
           </span>
         </div>
@@ -73,18 +106,17 @@ const signup = () => {
                 confPassword,
               }}
               validationSchema={registerValidation}
-              // onSubmit={() => {
-              //   signInHandler();
-              // }}
+              onSubmit={() => {
+                signUpHandler();
+              }}
             >
               {() => (
-                <Form method="post" className="space-y-4 sm:space-y-6" action="/api/auth/signup/email">
+                <Form className="space-y-4 sm:space-y-6">
                   <div>
-                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">Your Name</label>
-                    <input
-                      type="name"
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Your email</label>
+                    <CustomInput
+                      type="text"
                       name="name"
-                      id="name"
                       onChange={handleChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                       placeholder="full name"
@@ -92,10 +124,9 @@ const signup = () => {
                   </div>
                   <div>
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Your email</label>
-                    <input
+                    <CustomInput
                       type="email"
                       name="email"
-                      id="email"
                       onChange={handleChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                       placeholder="name@company.com"
@@ -103,21 +134,19 @@ const signup = () => {
                   </div>
                   <div>
                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
-                    <input
+                    <CustomInput
                       type="password"
                       name="password"
-                      id="password"
                       onChange={handleChange}
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                     />
                   </div>
                   <div>
-                    <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium text-gray-900 ">Confirm password</label>
-                    <input
-                      type="confirm-password"
-                      name="confirm-password"
-                      id="confirm-password"
+                    <label htmlFor="confpassword" className="block mb-2 text-sm font-medium text-gray-900 ">Confirm password</label>
+                    <CustomInput
+                      type="password"
+                      name="confPassword"
                       placeholder="••••••••"
                       onChange={handleChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
@@ -127,10 +156,13 @@ const signup = () => {
                   <p className="text-sm font-light text-gray-500">
                     Already have an account? <a href="/signin" className="font-medium text-primary hover:underline">Login here</a>
                   </p>
-
                 </Form>
               )}
             </Formik>
+            <div>
+              {success && <span className="text-green-700">{success}</span>}
+            </div>
+            <div>{error && <span className="text-red-700">{error}</span>}</div>
           </div>
         </div>
       </div>

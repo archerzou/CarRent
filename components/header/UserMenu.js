@@ -50,7 +50,7 @@ const UserMenu = ({ session }) => (
 
                 <div className="flex gap-5 items-center">
                   <a
-                    href="/"
+                    href="/signup"
                     className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-gray-100"
                   >
                     <button type="button" className="text-white bg-primary py-1 w-20 rounded-md">
@@ -58,7 +58,7 @@ const UserMenu = ({ session }) => (
                     </button>
                   </a>
                   <a
-                    href="/"
+                    href="/signin"
                     className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-gray-100"
                   >
                     <button
