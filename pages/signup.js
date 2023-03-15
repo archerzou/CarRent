@@ -113,7 +113,7 @@ const signup = () => {
               {() => (
                 <Form className="space-y-4 sm:space-y-6">
                   <div>
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Your email</label>
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Your name</label>
                     <CustomInput
                       type="text"
                       name="name"

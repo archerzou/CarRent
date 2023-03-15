@@ -4,6 +4,8 @@ import { google } from 'googleapis';
 const { OAuth2 } = google.auth;
 const OAUTH_PLAYGROUND = 'https://developers.google.com/oauthplayground';
 
+google.options({ proxy: process.env.BASE_URL });
+
 const {
   MAILING_SERVICE_CLIENT_ID,
   MAILING_SERVICE_CLIENT_SECRET,

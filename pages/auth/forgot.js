@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-import { getSession } from 'next-auth/react';
 import { BiLeftArrowAlt } from 'react-icons/bi';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -45,7 +44,7 @@ const forgot = () => {
     <>
       {loading && <DotLoaderSpinner loading={loading} />}
       <Header />
-      <div className="flex flex-col items-center justify-center bg-gray_2 p-6 sm:p-16 mx-auto">
+      <div className="flex flex-col items-center justify-center bg-gray_2 p-6 sm:p-32 mx-auto">
         <div className="flex items-center">
           <button type="button" className="flex p-2.5 text-lg border-2 hover:border-primary rounded-full">
             <BiLeftArrowAlt className="text-sm sm:text-2xl hover:text-primary" />
@@ -83,26 +82,6 @@ const forgot = () => {
                       placeholder="Email Address"
                     />
                   </div>
-                  {/* <div>
-                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
-                    <CustomInput
-                      type="password"
-                      name="password"
-                      onChange={handleChange}
-                      placeholder="••••••••"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="confpassword" className="block mb-2 text-sm font-medium text-gray-900 ">Confirm password</label>
-                    <CustomInput
-                      type="password"
-                      name="confPassword"
-                      placeholder="••••••••"
-                      onChange={handleChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                    />
-                  </div> */}
                   <button type="submit" className="w-full text-white bg-primary focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Send Link</button>
                 </Form>
               )}
