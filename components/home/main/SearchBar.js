@@ -17,7 +17,7 @@ const SearchBar = ({ searchHandler }) => {
   };
   return (
     <form
-      className="flex items-center mt-3 sm: hidden"
+      className="items-center top-3 sm: hidden"
       onSubmit={(e) => handleSearch(e)}
     >
       <div className="relative w-full">

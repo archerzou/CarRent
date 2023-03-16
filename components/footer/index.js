@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => (
   <footer className="p-4 bg-white rounded-lg md:px-6 md:py-8 mx-2 sm:mx-14">
     <div className="sm:flex sm:justify-between">
-      <a href="https://flowbite.com/" className="flex-col items-start mb-4 sm:mb-0 w-80">
+      <a href="/" className="flex-col items-start mb-4 sm:mb-0 w-80">
         <span className="font-bold text-2xl tracking-tight text-primary">MORENT</span>
         <p className="my-6">Our vision is to provide convenience and help increase your sales business.</p>
       </a>
