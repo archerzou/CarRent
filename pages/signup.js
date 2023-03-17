@@ -93,7 +93,7 @@ const signup = () => {
         </div>
         {/* register section */}
         <div className="w-full bg-white rounded-lg shadow my-8 sm:max-w-md xl:p-0">
-          <div className="p-4 space-y-4 md:space-y-6 sm:p-4">
+          <div className="p-4 space-y-4 md:space-y-6">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 sm:text-2xl ">
               Create and account
             </h1>

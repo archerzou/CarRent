@@ -4,108 +4,42 @@ const carSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, 'title is required'],
     },
     brand: {
       type: String,
-      required: true,
+      required: [true, 'brand is required'],
+    },
+    description: {
+      type: String,
     },
     price: {
       type: Number,
-      required: true,
+      required: [true, 'price is required'],
     },
     capacity: {
       type: Number,
-      required: true,
+      required: [true, 'capacity is required'],
     },
     carType: {
       type: String,
-      requried: true,
-    }
-
-    slug: {
+      requried: [true, 'type is required'],
+    },
+    location: {
       type: String,
-      required: true,
-      unique: true,
-      // lowercase: true,
+      required: [true, 'location is required'],
     },
-    category: {
-      type: ObjectId,
-      required: true,
-      ref: 'Category',
-    },
-    subCategories: [
-      {
-        type: ObjectId,
-        ref: 'subCategory',
-      },
-    ],
-    details: [
-      {
-        name: String,
-        value: String,
-      },
-    ],
-    questions: [
-      {
-        question: String,
-        answer: String,
-      },
-    ],
-    reviews: [reviewSchema],
-    refundPolicy: {
+    image: {
       type: String,
-      default: '30 days',
+      default:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmDbibpeXlIGCDVjp_U9SpuYdMow7cS2ki1Q&usqp=CAU',
     },
-    rating: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    numReviews: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    shipping: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    subProducts: [
-      {
-        sku: String,
-        images: [],
-        description_images: [],
-        color: {
-          color: {
-            type: String,
-          },
-          image: {
-            type: String,
-          },
-        },
-        sizes: [
-          {
-            size: String,
-            qty: Number,
-            price: Number,
-          },
-        ],
-        discount: {
-          type: Number,
-          default: 0,
-        },
-        sold: {
-          type: Number,
-          default: 0,
-        },
-      },
-    ],
   },
   {
     timestamps: true,
   },
 );
-const car = mongoose.models.car || mongoose.model('car', carSchema);
+const Car = mongoose.models.car || mongoose.model('car', carSchema);
+
+export default Car;
 

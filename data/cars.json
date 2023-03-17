@@ -1,0 +1,38 @@
+[
+    {
+        "_id": {
+            "$oid": "62c4711c062128444ad591a1"
+          },
+          "title": "Nissan GT - R",
+          "brand": "Nissan",
+          "description": "NISMO has become the embodiment of Nissan's outstanding performance, inspired by the most unforgiving proving ground.",
+          "price":80,
+          "capacity":2,
+          "carType": "Sport",
+          "location": "Roma"
+    },
+    {
+        "_id": {
+            "$oid": "62c4711c062128444ad591a2"
+          },
+          "title": "Koenigsegg",
+          "brand": "Koenigsegg",
+          "description": "Koenigsegg has become the embodiment of Nissan's outstanding performance, inspired by the most unforgiving proving ground.",
+          "price":99,
+          "capacity":5,
+          "carType": "MPV",
+          "location": "Paris"
+    },
+    {
+        "_id": {
+            "$oid": "62c4711c062128444ad591a3"
+          },
+          "title": "Rolls-Royce",
+          "brand": "Rolls",
+          "description": "Rolls has become the embodiment of Nissan's outstanding performance, inspired by the most unforgiving proving ground.",
+          "price":96,
+          "capacity":4,
+          "carType": "Coupe",
+          "location": "Suzhou"
+    }
+]
