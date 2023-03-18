@@ -28,7 +28,7 @@ const Header = () => {
                 } ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'}`}
                 onClick={() => setActive(nav.title)}
               >
-                <a href={`#${nav.id}`}>{nav.title}</a>
+                <Link href={nav.id}>{nav.title}</Link>
               </li>
             ))}
           </ul>
@@ -55,7 +55,7 @@ const Header = () => {
                     } ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'}`}
                     onClick={() => setActive(nav.title)}
                   >
-                    <a href={`#${nav.id}`}>{nav.title}</a>
+                    <Link href={nav.id}>{nav.title}</Link>
                   </li>
                 ))}
               </ul>
