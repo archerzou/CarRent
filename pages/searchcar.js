@@ -2,15 +2,15 @@ import React from 'react';
 
 import Header from '../components/header';
 import Footer from '../components/footer';
-import CarInfo from '../components/carInfo';
+import Search from '../components/Search';
 
-const AddCar = () => (
+const SearchCar = () => (
   <>
     <Header />
-    <CarInfo />
+    <Search />
     <Footer />
   </>
 
 );
 
-export default AddCar;
+export default SearchCar;

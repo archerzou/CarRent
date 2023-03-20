@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import SearchBar from './SearchBar';
-import PickUp from './PickUp';
+import SearchBar from '../../searchBar';
+import PickUp from '../../pickUp';
 import CarCard from '../../carCard';
 
 const Main = ({ searchHandler }) => {
