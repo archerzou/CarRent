@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Datepicker from 'react-tailwindcss-datepicker';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const locationOptions = [
   { value: 'Chichago', display: 'Chichago' },
@@ -18,23 +19,21 @@ const timeOptions = [
 ];
 
 const PickUp = () => {
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [pickLocation, setPicklLocation] = useState('');
   const [dropLocation, setDropLocation] = useState('');
   const [pickTime, setPickTime] = useState('');
   const [dropTime, setDropTime] = useState('');
 
   const startChange = (newDate) => {
-    const newStartDate = newDate.endDate;
-    setStartDate(newStartDate);
-    console.log('startDate:', newStartDate);
+    setStartDate(newDate);
+    console.log('startDate:', newDate);
   };
 
   const endChange = (newDate) => {
-    const newEndDate = newDate.endDate;
-    setEndDate(newEndDate);
-    console.log('endDate:', newEndDate);
+    setEndDate(newDate);
+    console.log('endDate:', newDate);
   };
 
   const onPickChange = (e) => {
@@ -75,9 +74,9 @@ const PickUp = () => {
             <p className="text-md mx-2">Pick - Up</p>
           </div>
 
-          <div className="flex justify-between items-center p-1.5">
+          <div className="grid grid-cols-3 justify-center items-center py-1.5">
             {/* select location */}
-            <div className="flex-col justify-start border-r-2 sm:pr-8">
+            <div className="flex-col justify-start">
               <p htmlFor="location" className="font-bold">
                 Locations
               </p>
@@ -96,12 +95,12 @@ const PickUp = () => {
               </select>
             </div>
             {/* select date */}
-            <div className="flex-col justify-start border-r-2 sm:pr-4">
+            <div className="flex-col justify-start">
               <p className="font-bold">Date</p>
-              <Datepicker
+              <DatePicker
+                className="p-1 text-gray-500"
+                selected={startDate}
                 placeholder="Select your date"
-                asSingle
-                value={startDate}
                 onChange={startChange}
               />
             </div>
@@ -136,9 +135,9 @@ const PickUp = () => {
             <p className="text-md mx-2">Drop - Off</p>
           </div>
 
-          <div className="flex justify-between items-center p-1.5">
+          <div className="grid grid-cols-3 justify-center items-center p-1.5">
             {/* select drop location */}
-            <div className="flex-col justify-start sm:pr-8 border-r-2">
+            <div className="flex-col justify-start sm:pr-8 ">
               <p htmlFor="location" className="font-bold">
                 Locations
               </p>
@@ -157,12 +156,12 @@ const PickUp = () => {
               </select>
             </div>
             {/* select date */}
-            <div className="flex-col justify-start sm:pr-4 border-r-2">
+            <div className="flex-col justify-start sm:pr-4 ">
               <p className="font-bold">Date</p>
-              <Datepicker
+              <DatePicker
+                className="p-1 text-gray-500"
+                selected={endDate}
                 placeholder="Select your date"
-                asSingle
-                value={endDate}
                 onChange={endChange}
               />
             </div>

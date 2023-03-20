@@ -19,7 +19,9 @@ handler.get(async (req, res) => {
       capacity: car.capacity,
       carType: car.carType,
       location: car.location,
-      image: car.image,
+      steering: car.steering,
+      gasoline: car.gasoline,
+      images: car.images,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

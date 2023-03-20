@@ -4,8 +4,9 @@ import thunk from 'redux-thunk';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
 import car from './carSlice';
+import dialog from './DialogSlice';
 
-const reducers = combineReducers({ car });
+const reducers = combineReducers({ car, dialog });
 
 const config = {
   key: 'root',

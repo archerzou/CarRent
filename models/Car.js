@@ -30,11 +30,17 @@ const carSchema = new mongoose.Schema(
       type: String,
       required: [true, 'location is required'],
     },
-    image: {
+    steering: {
       type: String,
-      default:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmDbibpeXlIGCDVjp_U9SpuYdMow7cS2ki1Q&usqp=CAU',
+      required: [true, 'steering is required'],
+      default: 'Manual',
     },
+    gasoline: {
+      type: Number,
+      required: [true, 'gasoline is required'],
+      default: 70,
+    },
+    images: [],
   },
   {
     timestamps: true,

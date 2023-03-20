@@ -3,94 +3,28 @@ export const validateEmail = (email) => {
   return regextSt.test(email);
 };
 
-// export const validateCreateProduct = (product, images) => {
-//   const { sizes } = product;
-//   const { details } = product;
-//   const { questions } = product;
-//   const checks = [
-//     {
-//       msg: 'Name, Description, Brand added successfully.',
-//       type: 'success',
-//     },
-//   ];
-//   if (images.length < 3) {
-//     checks.push({
-//       msg: `Choose atleast 3 images (${3 - images.length} remaining).`,
-//       type: 'error',
-//     });
-//   } else {
-//     checks.push({
-//       msg: `${images.length} images choosen.`,
-//       type: 'success',
-//     });
-//   }
-//   if (!product.color.color) {
-//     checks.push({
-//       msg: 'Choose a main product color.',
-//       type: 'error',
-//     });
-//   } else {
-//     checks.push({
-//       msg: 'Product color been choosen.',
-//       type: 'success',
-//     });
-//   }
-//   if (!product.color.image) {
-//     checks.push({
-//       msg: 'Choose a product style image.',
-//       type: 'error',
-//     });
-//   } else {
-//     checks.push({
-//       msg: 'Product style image been choosen.',
-//       type: 'success',
-//     });
-//   }
-//   for (let i = 0; i < sizes.length; i += 1) {
-//     if (sizes[i].qty === '' || sizes[i].price === '' || sizes[i].size === '') {
-//       checks.push({
-//         msg: 'Please fill all informations on sizes.',
-//         type: 'error',
-//       });
-//       break;
-//     } else {
-//       checks.push({
-//         msg: 'Atleast one size/qty/price added.',
-//         type: 'success',
-//       });
-//     }
-//   }
-//   for (let i = 0; i < details.length; i += 1) {
-//     if (details[i].name === '' || details[i].value === '') {
-//       checks.push({
-//         msg: 'Please fill all informations on details.',
-//         type: 'error',
-//       });
-//       break;
-//     } else {
-//       checks.push({
-//         msg: 'Atleast one detail added.',
-//         type: 'success',
-//       });
-//     }
-//   }
-//   for (let i = 0; i < questions.length; i += 1) {
-//     if (questions[i].question === '' || details[i].answer === '') {
-//       checks.push({
-//         msg: 'Please fill all informations on questions.',
-//         type: 'error',
-//       });
-//       break;
-//     } else {
-//       checks.push({
-//         msg: 'Atleast one question added.',
-//         type: 'success',
-//       });
-//     }
-//   }
-//   const sTest = checks.find((c) => c.type === 'error');
-//   if (sTest) {
-//     return checks;
-//   }
-//   return 'valid';
-// };
+export const validateCreateCar = (car, images) => {
+  const checks = [
+    {
+      msg: 'Title, Description, Brand added successfully.',
+      type: 'success',
+    },
+  ];
+  if (images.length < 1) {
+    checks.push({
+      msg: 'Choose at least 1 image.',
+      type: 'error',
+    });
+  } else {
+    checks.push({
+      msg: `${images.length} images choosen.`,
+      type: 'success',
+    });
+  }
+
+  const sTest = checks.find((c) => c.type === 'error');
+  if (sTest) {
+    return checks;
+  }
+  return 'valid';
+};

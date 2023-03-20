@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import CustomInput from '../customInput';
+import CustomUpload from '../customUpload';
 import CustomTextArea from '../customTextArea';
+import dataURItoBlob from '../../utils/dataURItoBlob';
+import { uploadCarImages } from '../../requests/upload';
+import { validateCreateCar } from '../../utils/validation';
+import { showDialog, hideDialog } from '../../store/DialogSlice';
+import DialogModal from '../dialogModal';
 
 const initialState = {
   title: '',
@@ -16,12 +24,20 @@ const initialState = {
   capacity: 0,
   carType: '',
   location: '',
+  steering: '',
+  gasoline: 0,
   images: [],
 };
 
 const CarInfo = () => {
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState(initialState);
+  const [images, setImages] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(hideDialog());
+  }, []);
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -36,12 +52,34 @@ const CarInfo = () => {
     capacity: Yup.number().required('Please add a capacity  number'),
     carType: Yup.string().required('Please select a car type.'),
     location: Yup.string().required('Please select your location.'),
+    steering: Yup.string().required('Please select steering with Manual or Electric.'),
+    gasoline: Yup.string().required('Please add gasoline number.'),
   });
+
+  let uploadedImages = [];
 
   const createCarHandler = async () => {
     setLoading(true);
+
+    if (images) {
+      const temp = images.map((img) => dataURItoBlob(img));
+      const path = 'car images';
+      const formData = new FormData();
+      formData.append('path', path);
+      temp.forEach((image) => {
+        formData.append('file', image);
+      });
+
+      uploadedImages = await uploadCarImages(formData);
+      console.log('here', uploadedImages);
+    }
+
     try {
-      const { data } = await axios.post('/api/admin/car', car);
+      const { data } = await axios.post('/api/admin/car', {
+        ...car,
+        images: uploadedImages,
+      });
+      console.log('car', data);
       setLoading(false);
       toast.success(data.message, {
         hideProgressBar: true, autoClose: 3000, type: 'success',
@@ -54,8 +92,23 @@ const CarInfo = () => {
     }
   };
 
+  const createCar = async () => {
+    const test = validateCreateCar(car, images);
+    if (test === 'valid') {
+      createCarHandler();
+    } else {
+      dispatch(
+        showDialog({
+          header: 'Please follow our instructions.',
+          msgs: test,
+        }),
+      );
+    }
+  };
+
   return (
     <>
+      <DialogModal />
       <div className="flex flex-col items-center justify-center bg-gray_2 py-6 sm:p-6 mx-auto">
         <div className="w-full bg-white rounded-lg shadow my-8 sm:max-w-6xl xl:p-0">
           <div className="p-4">
@@ -78,10 +131,13 @@ const CarInfo = () => {
                 capacity: car.capacity,
                 carType: car.carType,
                 location: car.location,
+                steering: car.steering,
+                gasoline: car.gasoline,
+                imageInputFile: '',
               }}
               validationSchema={validate}
               onSubmit={() => {
-                createCarHandler();
+                createCar();
               }}
             >
               {() => (
@@ -122,7 +178,7 @@ const CarInfo = () => {
                       />
                     </div>
                     <div>
-                      <label htmlFor="capacity" className="block mb-2 text-sm font-medium text-gray-900 ">Capacity</label>
+                      <label htmlFor="capacity" className="block mb-2 text-sm font-medium text-gray-900 ">Capacity (Person)</label>
                       <CustomInput
                         type="number"
                         name="capacity"
@@ -155,7 +211,30 @@ const CarInfo = () => {
                       />
                     </div>
                   </div>
-                  {/* car infor fourth line */}
+                  {/*  car info fourth line */}
+                  <div className=" grid grid-cols-1 gap-8 items-center sm:grid-cols-2 py-4">
+                    <div>
+                      <label htmlFor="steering" className="block mb-2 text-sm font-medium text-gray-900 ">Steering</label>
+                      <CustomInput
+                        type="text"
+                        name="steering"
+                        onChange={handleChange}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                        placeholder="Manual or Electric"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="gasoline" className="block mb-2 text-sm font-medium text-gray-900 ">Gasoline(L)</label>
+                      <CustomInput
+                        type="number"
+                        name="gasoline"
+                        onChange={handleChange}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                        placeholder="Gasoline Volumn"
+                      />
+                    </div>
+                  </div>
+                  {/* car infor fifth line */}
                   <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 py-4 ">Car description</label>
                   <CustomTextArea
                     name="description"
@@ -165,53 +244,15 @@ const CarInfo = () => {
                     placeholder="Descripe car here..."
                   />
 
-                  <p className="text-sm font-semibold leading-tight tracking-tight text-blue-700 pt-8 py-4">
-                    PICK INFO
-                  </p>
-                  {/* pick info first line */}
-                  <div className=" grid grid-cols-1 gap-8 items-center sm:grid-cols-2 py-4">
-                    <div>
-                      <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Pickup Location</label>
-                      <input
-                        type="text"
-                        name="name"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Location Address"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Drop Off Location</label>
-                      <input
-                        type="text"
-                        name="name"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                        placeholder="Location Address"
-                      />
-                    </div>
-                  </div>
-                  {/*  pick info second line */}
-                  <div className=" grid grid-cols-1 gap-8 items-center sm:grid-cols-2 py-4">
-                    <div>
-                      <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Availability From</label>
-                      <input
-                        type="text"
-                        name="name"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                        placeholder="From date"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Availability to</label>
-                      <input
-                        type="text"
-                        name="name"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                        placeholder="To date"
-                      />
-                    </div>
-                  </div>
+                  <CustomUpload
+                    name="imageInputFile"
+                    header="Car Images"
+                    text="Add more images"
+                    images={images}
+                    setImages={setImages}
+                  />
                   <div className="flex justify-end my-4">
-                    <button type="submit" className="mr-0 text-white bg-primary focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Rent now</button>
+                    <button type="submit" className="mr-0 text-white bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Register Car</button>
                   </div>
                 </Form>
               )}

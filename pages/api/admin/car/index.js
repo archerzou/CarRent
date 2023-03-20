@@ -15,6 +15,9 @@ handler.post(async (req, res) => {
       capacity: req.body.capacity,
       carType: req.body.carType,
       location: req.body.location,
+      steering: req.body.steering,
+      gasoline: req.body.gasoline,
+      images: req.body.images,
     });
     await newCar.save();
     res.status(200).json({ message: 'New car created Successfully.' });
