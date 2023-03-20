@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { showDialog } from '../../store/DialogSlice';
-import DialogModal from '../dialogModal';
 
 const CustomUpload = ({
   images,
@@ -38,13 +37,14 @@ const CustomUpload = ({
         img.type !== 'image/jpeg'
         && img.type !== 'image/png'
         && img.type !== 'image/jpg'
+        && img.type !== 'image/webp'
       ) {
         dispatch(
           showDialog({
             header: 'Unsupported Format.',
             msgs: [
               {
-                msg: `${img.name} format is unsupported ! only JPEG,PNG,JPG are allowed.`,
+                msg: `${img.name} format is unsupported ! only JPEG, PNG, JPG, WEBP are allowed.`,
                 type: 'error',
               },
             ],

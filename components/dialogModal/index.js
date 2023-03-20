@@ -9,7 +9,7 @@ import Slide from '@mui/material/Slide';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 
-import { showDialog, hideDialog } from '../../store/DialogSlice';
+import { hideDialog } from '../../store/DialogSlice';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="down" ref={ref} {...props} />);
 
