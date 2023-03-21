@@ -7,7 +7,7 @@ import CarCard from '../../carCard';
 const Main = ({ searchHandler }) => {
   console.log('homepage');
   return (
-    <div className=" bg-gray-100  sm:px-16 px-6">
+    <div className=" bg-gray-100  sm:px-16 px-6 py-6">
       <SearchBar searchHandler={searchHandler} />
       {/* hero section */}
       <div className="flex flex-col justify-between">
@@ -73,7 +73,7 @@ const Main = ({ searchHandler }) => {
 
       </div>
 
-      <div className="flex justify-center py-8">
+      <div className="flex justify-center pt-8 pb-4">
         <button type="button" className="bg-blue-500 py-2.5 px-5 rounded text-white">
           Show more car
         </button>
