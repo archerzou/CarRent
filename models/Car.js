@@ -24,7 +24,7 @@ const carSchema = new mongoose.Schema(
     },
     carType: {
       type: String,
-      requried: [true, 'type is required'],
+      required: [true, 'type is required'],
     },
     location: {
       type: String,
@@ -33,12 +33,10 @@ const carSchema = new mongoose.Schema(
     steering: {
       type: String,
       required: [true, 'steering is required'],
-      default: 'Manual',
     },
     gasoline: {
       type: Number,
       required: [true, 'gasoline is required'],
-      default: 70,
     },
     images: [],
   },
@@ -46,7 +44,8 @@ const carSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-const Car = mongoose.models.car || mongoose.model('car', carSchema);
+
+const Car = mongoose.models.Car || mongoose.model('Car', carSchema);
 
 export default Car;
 

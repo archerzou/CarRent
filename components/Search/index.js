@@ -1,42 +1,17 @@
 import React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import axios from 'axios';
 
 import db from '../../utils/db';
-// import Car from '../../models/Car';
+import Car from '../../models/Car';
 import CarCard from '../carCard';
+import {
+  filterArray,
+  randomize,
+  removeDuplicates,
+} from '../../utils/arrays_utils';
 
-const Search = () => {
-  const router = useRouter();
-  const filter = ({
-    search,
-    title,
-    brand,
-    price,
-    capacity,
-    carType,
-  }) => {
-    const path = router.pathname;
-    const { query } = router;
-    if (search) query.search = search;
-    if (title) query.title = title;
-    if (brand) query.brand = brand;
-    if (price) query.price = price;
-    if (capacity) query.capacity = capacity;
-    if (carType) query.carType = carType;
-    router.push({
-      pathname: path,
-      query,
-    });
-  };
-
-  const searchHandler = (search) => {
-    if (search === '') {
-      filter({ search: {} });
-    } else {
-      filter({ search });
-    }
-  };
+const Search = ({ cars }) => {
+  console.log('frontend', cars);
 
   return (
     <div className="flex flex-wrap">
@@ -46,3 +21,14 @@ const Search = () => {
 };
 
 export default Search;
+
+export async function getServerSideProps(ctx) {
+  // -------------------------------------------------->
+  const cars = await axios.get('http://localhost:3000/api/cars');
+
+  console.log(cars);
+
+  return {
+    props: { cars: JSON.parse(JSON.stringify(cars)) },
+  };
+}
