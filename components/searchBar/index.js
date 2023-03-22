@@ -7,9 +7,9 @@ const SearchBar = ({ searchHandler }) => {
   const [query, setQuery] = useState(router.query.search || '');
   const handleSearch = (e) => {
     e.preventDefault();
-    if (router.pathname !== '/browse') {
+    if (router.pathname !== '/searchcar') {
       if (query.length > 1) {
-        router.push(`/browse?search=${query}`);
+        router.push(`/searchcar?search=${query}`);
       }
     } else {
       searchHandler(query);
