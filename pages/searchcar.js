@@ -132,7 +132,7 @@ export async function getServerSideProps(ctx) {
   const { query } = ctx;
 
   // -------------------------------------------------->
-  // for multiple select
+  // for multiple select string
   function createRegex(data, styleRegex) {
     let updateRegex = styleRegex;
     if (data.length > 1) {
@@ -151,6 +151,8 @@ export async function getServerSideProps(ctx) {
 
   // -----------------------------------
   const capacityQuery = query.capacity?.split('_') || '';
+  const capacityRegex = `^${capacityQuery[0]}`;
+  const capacitySearchRegex = createRegex(capacityQuery, capacityRegex);
 
   // -----------------------------------
   const search = searchQuery && searchQuery !== ''
@@ -174,7 +176,8 @@ export async function getServerSideProps(ctx) {
   const capacity = capacityQuery && capacityQuery !== ''
     ? {
       capacity: {
-        $gte: Number(capacityQuery),
+        $regex: capacitySearchRegex,
+        $options: 'i',
       },
     }
     : {};

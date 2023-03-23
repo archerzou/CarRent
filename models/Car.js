@@ -19,7 +19,7 @@ const carSchema = new mongoose.Schema(
       required: [true, 'price is required'],
     },
     capacity: {
-      type: Number,
+      type: String,
       required: [true, 'capacity is required'],
     },
     carType: {
