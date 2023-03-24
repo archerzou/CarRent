@@ -123,6 +123,14 @@ const SearchCar = ({ cars, carTypes, capacities, prices, paginationCount }) => {
               max={maxPrice}
               priceHandler={priceHandler}
             />
+            {/* clear all the filters */}
+            <button
+              type="button"
+              className="bg-blue-500 hidden sm:block button py-2.5 px-5 rounded text-white font-semibold sm:text"
+              onClick={() => router.push('/searchcar')}
+            >
+              Clear All filters ({Object.keys(router.query).length})
+            </button>
           </div>
         </div>
         <div className="flex-col mx-auto px-8 pb-2">

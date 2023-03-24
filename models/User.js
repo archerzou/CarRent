@@ -73,7 +73,7 @@ const userSchema = new mongoose.Schema(
     ],
     wishlist: [
       {
-        product: {
+        car: {
           type: ObjectId,
           ref: 'Car',
         },

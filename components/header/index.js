@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { signOut, signIn, useSession } from 'next-auth/react';
 
 import { navLinks } from '../../constants';
-import UserMenu from './UserMenu';
 
 const Header = () => {
   const [active, setActive] = useState('Home');
