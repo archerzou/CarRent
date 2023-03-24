@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
+import { signOut, signIn, useSession } from 'next-auth/react';
 
-import { useSession } from 'next-auth/react';
 import { navLinks } from '../../constants';
 import UserMenu from './UserMenu';
 
@@ -32,15 +32,31 @@ const Header = () => {
               </li>
             ))}
           </ul>
-          <UserMenu session={session} />
-          <button
-            type="button"
-            className={`${
-              session ? 'bg-red-600' : 'bg-blue-500'
-            } hidden sm:block button bg-blue-500 ml-6 py-2.5 px-5 rounded text-white font-semibold sm:text leading-5`}
+
+          <div className={`${
+            session ? 'flex' : 'hidden'
+          } text-sm rounded-full ml-6`}
           >
-            {!session ? 'Login' : 'Logout'}
-          </button>
+            <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="user" />
+          </div>
+
+          {session ? (
+            <button
+              type="button"
+              onClick={() => signOut()}
+              className="bg-red-400 hidden sm:block button  ml-6 py-2.5 px-5 rounded text-white font-semibold sm:text"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => signIn()}
+              className="hidden sm:block button bg-blue-500 ml-6 py-2.5 px-5 rounded text-white font-semibold sm:text"
+            >
+              Login
+            </button>
+          )}
           <div className="sm:hidden flex flex-1 justify-start items-center">
             <img
               src={toggle ? '/close.png' : '/menu.png'}
@@ -68,16 +84,25 @@ const Header = () => {
                     </li>
                   ))}
                 </ul>
-                <button
-                  type="button"
-                  className={`${
-                    session ? 'bg-red-600' : 'bg-blue-500'
-                  } mx-auto w-full my-4 sm:my-0 block sm:flex button  py-4 px-5 rounded-lg border-2 text-white  sm:text leading-5`}
-                >
-                  {!session ? 'Login' : 'Logout'}
-                </button>
-              </div>
 
+                {session ? (
+                  <button
+                    type="button"
+                    onClick={() => signOut()}
+                    className="bg-red-400 mx-auto w-full my-4 sm:my-0 block sm:flex button  py-4 px-5 rounded-lg border-2 text-white sm:text"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => signIn()}
+                    className="bg-blue-500 mx-auto w-full my-4 sm:my-0 block sm:flex button  py-4 px-5 rounded-lg border-2 text-white  sm:text"
+                  >
+                    Login
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

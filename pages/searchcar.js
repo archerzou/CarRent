@@ -2,6 +2,7 @@ import React from 'react';
 // import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Pagination } from '@mui/material';
 
 import db from '../utils/db';
 import Car from '../models/Car';
@@ -14,7 +15,7 @@ import CarTypeFilter from '../components/carTypeFilter';
 import CapacityFilter from '../components/capacityFilter';
 import PriceFilter from '../components/priceFilter';
 
-const SearchCar = ({ cars, carTypes, capacities, prices }) => {
+const SearchCar = ({ cars, carTypes, capacities, prices, paginationCount }) => {
   const router = useRouter();
   const maxPrice = Math.max(...prices);
   const minPrice = Math.min(...prices);
@@ -26,6 +27,7 @@ const SearchCar = ({ cars, carTypes, capacities, prices }) => {
     price,
     steering,
     gasoline,
+    page,
   }) => {
     const path = router.pathname;
     const { query } = router;
@@ -35,6 +37,7 @@ const SearchCar = ({ cars, carTypes, capacities, prices }) => {
     if (price) query.price = price;
     if (steering) query.steering = steering;
     if (gasoline) query.gasoline = gasoline;
+    if (page) query.page = page;
 
     router.push({
       pathname: path,
@@ -57,6 +60,9 @@ const SearchCar = ({ cars, carTypes, capacities, prices }) => {
   };
   const priceHandler = (price) => {
     filter({ price });
+  };
+  const pageHandler = (e, page) => {
+    filter({ page });
   };
 
   const replaceQuery = (queryName, value) => {
@@ -119,12 +125,21 @@ const SearchCar = ({ cars, carTypes, capacities, prices }) => {
             />
           </div>
         </div>
-        <div className="flex-col mx-auto px-8">
+        <div className="flex-col mx-auto px-8 pb-2">
           <PickUp />
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 items-center justify-center">
             {cars.map((car) => (
               <CarCard car={car} key={car._id} />
             ))}
+          </div>
+          <div className="mx-auto flex w-full justify-center p-6">
+            <Pagination
+              count={paginationCount}
+              defaultPage={1}
+              onChange={pageHandler}
+              variant="outlined"
+              color="primary"
+            />
           </div>
         </div>
       </div>
@@ -150,6 +165,8 @@ export async function getServerSideProps(ctx) {
   // -----------------------------------
   const searchQuery = query.search || '';
   const priceQuery = query.price || '';
+  const pageSize = 9;
+  const page = query.page || 1;
   // -----------------------------------
   const carTypeQuery = query.carType?.split('_') || '';
   const carTypeRegex = `^${carTypeQuery[0]}`;
@@ -203,11 +220,19 @@ export async function getServerSideProps(ctx) {
     ...capacity,
     ...price,
   })
+    .skip(pageSize * (page - 1))
+    .limit(pageSize)
     .sort({ createdAt: -1 })
     .lean();
   const carTypes = await Car.find().distinct('carType').lean();
   const capacities = await Car.find().distinct('capacity').lean();
   const prices = await Car.find().distinct('price').lean();
+  const totalCars = await Car.countDocuments({
+    ...search,
+    ...carType,
+    ...capacity,
+    ...price,
+  });
 
   return {
     props: {
@@ -215,6 +240,7 @@ export async function getServerSideProps(ctx) {
       carTypes,
       capacities,
       prices,
+      paginationCount: Math.ceil(totalCars / pageSize),
     },
   };
   // try {
