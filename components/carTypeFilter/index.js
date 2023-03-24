@@ -2,7 +2,7 @@ import React from 'react';
 
 const CarTypeFilter = ({ carTypes, carTypeHandler, replaceQuery }) => (
   <div className="flex-col justify-start mx-auto">
-    {carTypes.map((carType, i) => {
+    {carTypes?.map((carType, i) => {
       const check = replaceQuery('carType', carType);
       return (
         <div

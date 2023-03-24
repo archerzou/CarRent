@@ -2,7 +2,7 @@ import React from 'react';
 
 const CapacityFilter = ({ capacities, capacityHandler, replaceQuery }) => (
   <div className="flex-col justify-start mx-auto">
-    {capacities.map((capacity, i) => {
+    {capacities?.map((capacity, i) => {
       const check = replaceQuery('capacity', capacity);
       return (
         <div

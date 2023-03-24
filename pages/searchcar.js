@@ -14,9 +14,10 @@ import CarTypeFilter from '../components/carTypeFilter';
 import CapacityFilter from '../components/capacityFilter';
 import PriceFilter from '../components/priceFilter';
 
-const SearchCar = ({ cars, carTypes, capacities }) => {
+const SearchCar = ({ cars, carTypes, capacities, prices }) => {
   const router = useRouter();
-  console.log('router', router.pathname);
+  const maxPrice = Math.max(...prices);
+  const minPrice = Math.min(...prices);
 
   const filter = ({
     search,
@@ -54,14 +55,14 @@ const SearchCar = ({ cars, carTypes, capacities }) => {
   const capacityHandler = (capacity) => {
     filter({ capacity });
   };
+  const priceHandler = (price) => {
+    filter({ price });
+  };
 
   const replaceQuery = (queryName, value) => {
     const existedQuery = router.query[queryName];
-    console.log('existedQuery', existedQuery);
     const valueCheck = existedQuery?.search(value);
-    console.log('valueCheck', valueCheck);
     const checked = existedQuery?.search(`_${value}`);
-    console.log('checked', checked);
     let result = '';
     if (existedQuery) {
       if (existedQuery === value) {
@@ -111,7 +112,11 @@ const SearchCar = ({ cars, carTypes, capacities }) => {
             />
             {/* price filter */}
             <p className="text-gray-500 text-sm pt-12 pb-4">PRICE</p>
-            <PriceFilter min={0} max={100} />
+            <PriceFilter
+              min={minPrice}
+              max={maxPrice}
+              priceHandler={priceHandler}
+            />
           </div>
         </div>
         <div className="flex-col mx-auto px-8">
@@ -144,6 +149,7 @@ export async function getServerSideProps(ctx) {
   }
   // -----------------------------------
   const searchQuery = query.search || '';
+  const priceQuery = query.price || '';
   // -----------------------------------
   const carTypeQuery = query.carType?.split('_') || '';
   const carTypeRegex = `^${carTypeQuery[0]}`;
@@ -182,22 +188,33 @@ export async function getServerSideProps(ctx) {
     }
     : {};
 
+  const price = priceQuery && priceQuery !== ''
+    ? {
+      price: {
+        $lte: Number(priceQuery),
+      },
+    }
+    : {};
+
   db.connectDb();
   const cars = await Car.find({
     ...search,
     ...carType,
     ...capacity,
+    ...price,
   })
     .sort({ createdAt: -1 })
     .lean();
-  const carTypes = await Car.find().distinct('carType');
+  const carTypes = await Car.find().distinct('carType').lean();
   const capacities = await Car.find().distinct('capacity').lean();
+  const prices = await Car.find().distinct('price').lean();
 
   return {
     props: {
       cars: JSON.parse(JSON.stringify(cars)),
       carTypes,
       capacities,
+      prices,
     },
   };
   // try {

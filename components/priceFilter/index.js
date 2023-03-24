@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 
-const PriceFilter = (min, max) => {
+const PriceFilter = ({ min, max, priceHandler }) => {
   const [selectPrice, setSelectPrice] = useState(100);
   const changePrice = (event) => {
     setSelectPrice(event.target.value);
+    priceHandler(event.target.value);
   };
+  // const checkPrice = replaceQuery('price', selectPrice);
   return (
     <div>
       <input
         id="minmax-range"
         type="range"
-        min="50"
-        max="150"
+        min={min}
+        max={max}
         value={selectPrice}
         onChange={changePrice}
         className="w-full h-4 rounded-lg cursor-pointer "
