@@ -77,9 +77,6 @@ const userSchema = new mongoose.Schema(
           type: ObjectId,
           ref: 'Car',
         },
-        style: {
-          type: String,
-        },
       },
     ],
   },

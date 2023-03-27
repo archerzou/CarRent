@@ -187,12 +187,16 @@ export async function getServerSideProps(ctx) {
 
   // -----------------------------------
   const search = searchQuery && searchQuery !== ''
-    ? {
+    ? { $or: [{
       title: {
         $regex: searchQuery,
         $options: 'i',
-      },
-    }
+      } },
+    {
+      brand: {
+        $regex: searchQuery,
+        $options: 'i',
+      } }] }
     : {};
 
   const carType = carTypeQuery && carTypeQuery !== ''

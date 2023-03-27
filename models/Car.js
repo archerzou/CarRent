@@ -2,21 +2,29 @@ import mongoose from 'mongoose';
 
 const { ObjectId } = mongoose.Schema;
 
-const reviewSchema = new mongoose.Schema({
-  reviewBy: {
-    type: ObjectId,
-    ref: 'User',
-    required: true,
+const reviewSchema = new mongoose.Schema(
+  {
+    reviewBy: {
+      type: ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    rating: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    review: {
+      type: String,
+      required: true,
+    },
+    images: [],
+    likes: [],
   },
-  rating: {
-    type: Number,
-    default: 0,
+  {
+    timestamps: true,
   },
-  review: {
-    type: String,
-  },
-  likes: [],
-});
+);
 
 const carSchema = new mongoose.Schema(
   {
@@ -60,7 +68,18 @@ const carSchema = new mongoose.Schema(
     reviews: [reviewSchema],
     rating: {
       type: Number,
+      required: true,
       default: 0,
+    },
+    numReviews: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    renting: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
   {
