@@ -1,33 +1,6 @@
 import React, { useState } from 'react';
 import TableSelect from './TableSelect';
 
-const ratings = [
-  {
-    text: 'All',
-    value: '',
-  },
-  {
-    text: '5 star',
-    value: 5,
-  },
-  {
-    text: '4 star',
-    value: 4,
-  },
-  {
-    text: '2 star',
-    value: 2,
-  },
-  {
-    text: '2 star',
-    value: 2,
-  },
-  {
-    text: '1 star',
-    value: 1,
-  },
-];
-
 const orderOptions = [
   {
     text: 'Recommended',

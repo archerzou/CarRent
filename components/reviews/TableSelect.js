@@ -22,25 +22,15 @@ const TableSelect = ({ property, text, data, handleChange }) => {
             onMouseLeave={() => setVisible(false)}
             style={{ width: text === 'Order' && '200px' }}
           >
-            {data.map((item, i) => {
-              if (text === 'Rating') {
-                return (
-                  <li key={i} onClick={() => handleChange(item.value)}>
-                    <span>{item.text}</span>
-                  </li>
-                );
-              }
-
-              return (
-                <li
-                  style={{ width: text === 'Order' && '200px' }}
-                  key={i}
-                  onClick={() => handleChange(item.value)}
-                >
-                  <span>{item.text}</span>
-                </li>
-              );
-            })}
+            {data.map((item, i) => (
+              <li
+                style={{ width: text === 'Order' && '200px' }}
+                key={i}
+                onClick={() => handleChange(item.value)}
+              >
+                <span>{item.text}</span>
+              </li>
+            ))}
           </ul>
         )}
       </div>
