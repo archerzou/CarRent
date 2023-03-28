@@ -17,7 +17,7 @@ const Empty = () => {
         <h5
           className="mb-2 text-xl font-medium leading-tight text-neutral-800 "
         >
-          Your cart is empty
+          You need to login
         </h5>
       </div>
       <div className="mx-auto grid justify-center">
@@ -27,8 +27,8 @@ const Empty = () => {
         </button>
         )}
         <Link href="/searchcar">
-          <button type="button" className="font-bold border-t-2 bg-blue-500 text-white border-neutral-100 py-4 px-16 sm:px-36 rounded-md">
-            RENT NOW
+          <button type="button" className="font-bold border-t-2 bg-blue-500 text-white border-neutral-100 py-4 px-16 sm:px-32 rounded-md">
+            BROWSER CARS
           </button>
         </Link>
       </div>

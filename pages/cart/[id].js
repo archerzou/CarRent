@@ -7,6 +7,7 @@ import Header from '../../components/header';
 import Footer from '../../components/footer';
 import Empty from '../../components/cart/empty';
 import CarDetails from '../../components/cadDetails';
+import Pickup from '../../components/cart/pickup';
 import { updateCart } from '../../store/cartSlice';
 
 import db from '../../utils/db';
@@ -24,8 +25,12 @@ const cart = ({ car, whishlists }) => {
     <>
       <Header />
       {
-        cart.cartItems.length > 0 ? (
-          <CarDetails car={car} whishlists={whishlists} />
+        session ? (
+          <div className="flex-col bg-gray-100 py-8 px-24">
+            <CarDetails car={car} whishlists={whishlists} />
+            <Pickup />
+          </div>
+
         ) : (
           <Empty />
         )
@@ -48,43 +53,9 @@ export async function getServerSideProps(context) {
     .lean();
   const whishlists = await User.find().distinct('wishlist').lean();
 
-  //------------
-  function calculatePercentage(num) {
-    return (
-      (car.reviews.reduce((a, review) => (
-        a
-            + (review.rating === Number(num) || review.rating === Number(num) + 0.5)
-      ), 0)
-          * 100)
-        / car.reviews.length
-    ).toFixed(1);
-  }
-
-  const newCar = {
-    ...car,
-    ratings: [
-      {
-        percentage: calculatePercentage('5'),
-      },
-      {
-        percentage: calculatePercentage('4'),
-      },
-      {
-        percentage: calculatePercentage('3'),
-      },
-      {
-        percentage: calculatePercentage('2'),
-      },
-      {
-        percentage: calculatePercentage('1'),
-      },
-    ],
-    reviews: car.reviews.reverse(),
-  };
-
   return {
     props: {
-      car: JSON.parse(JSON.stringify(newCar)),
+      car: JSON.parse(JSON.stringify(car)),
       whishlists: JSON.parse(JSON.stringify(whishlists)),
     },
   };

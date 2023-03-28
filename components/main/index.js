@@ -1,14 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import SearchBar from '../../searchBar';
-import PickUp from '../../pickUp';
-import CarCard from '../../carCard';
+import PickUp from '../pickUp';
+import CarCard from '../carCard';
 
-const Main = ({ searchHandler }) => {
+const Main = ({ popCars, recommendCars }) => {
   console.log('homepage');
   return (
     <div className=" bg-gray-100  sm:px-16 px-6 py-6">
-      <SearchBar searchHandler={searchHandler} />
       {/* hero section */}
       <div className="flex flex-col justify-between">
         {/* left card */}
@@ -43,15 +41,14 @@ const Main = ({ searchHandler }) => {
       <div className="flex-col">
         <div className="w-full flex py-8 justify-between items-center">
           <span className="font-bold text-md text-gray-500">Popular Car</span>
-          <Link href="/">
+          <Link href="/searchcar">
             <span className="font-bold text-md text-blue-500">View All</span>
           </Link>
         </div>
         <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-4 gap-8 items-center justify-center">
-          <CarCard />
-          <CarCard />
-          <CarCard />
-          <CarCard />
+          {popCars.map((car) => (
+            <CarCard car={car} key={car._id} />
+          ))}
         </div>
 
       </div>
@@ -61,23 +58,20 @@ const Main = ({ searchHandler }) => {
           <span className="font-bold text-md text-gray-500">Recomendation</span>
         </div>
         <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-4 gap-8 items-center justify-center">
-          <CarCard />
-          <CarCard />
-          <CarCard />
-          <CarCard />
-          <CarCard />
-          <CarCard />
-          <CarCard />
-          <CarCard />
+          {recommendCars.map((car) => (
+            <CarCard car={car} key={car._id} />
+          ))}
         </div>
 
       </div>
+      <Link href="/searchcar">
+        <div className="flex justify-center pt-8 pb-4">
+          <button type="button" className="bg-blue-500 py-2.5 px-5 rounded text-white">
+            Show more car
+          </button>
+        </div>
+      </Link>
 
-      <div className="flex justify-center pt-8 pb-4">
-        <button type="button" className="bg-blue-500 py-2.5 px-5 rounded text-white">
-          Show more car
-        </button>
-      </div>
     </div>
   );
 };
