@@ -8,18 +8,17 @@ import Footer from '../../components/footer';
 import Empty from '../../components/cart/empty';
 import CarDetails from '../../components/cadDetails';
 import Pickup from '../../components/cart/pickup';
-import { updateCart } from '../../store/cartSlice';
+import LoginReminder from '../../components/loginReminder';
 
 import db from '../../utils/db';
 import Car from '../../models/Car';
 import User from '../../models/User';
 
-const cart = ({ car, whishlists }) => {
+const carInfo = ({ car, whishlists }) => {
   const Router = useRouter();
   const { data: session } = useSession();
   const { cart } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
-  console.log('first', cart);
 
   return (
     <>
@@ -27,12 +26,12 @@ const cart = ({ car, whishlists }) => {
       {
         session ? (
           <div className="flex-col bg-gray-100 py-8 px-24">
-            <CarDetails car={car} whishlists={whishlists} />
-            <Pickup />
+            <CarDetails car={car} whishlists={whishlists} show={false} />
+            <Pickup car={car} />
           </div>
 
         ) : (
-          <Empty />
+          <LoginReminder />
         )
       }
 
@@ -41,7 +40,7 @@ const cart = ({ car, whishlists }) => {
   );
 };
 
-export default cart;
+export default carInfo;
 
 export async function getServerSideProps(context) {
   const { query } = context;

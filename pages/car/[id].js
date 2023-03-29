@@ -17,7 +17,7 @@ const carDtails = ({ car, whishlists }) => (
 
     <Header />
     <div className="flex-col bg-gray-100 py-8 px-24">
-      <CarDetails car={car} whishlists={whishlists} />
+      <CarDetails car={car} whishlists={whishlists} show />
       <Reviews car={car} />
     </div>
     <Footer />

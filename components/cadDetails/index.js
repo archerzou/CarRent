@@ -9,7 +9,7 @@ import DialogModal from '../dialogModal';
 import ImageSwiper from '../imageSwiper';
 import { hideDialog, showDialog } from '../../store/DialogSlice';
 
-const CarDetails = ({ car, whishlists }) => {
+const CarDetails = ({ car, whishlists, show }) => {
   const dispatch = useDispatch();
   const [activeImg, setActiveImg] = useState('');
   const { data: session } = useSession();
@@ -120,7 +120,7 @@ const CarDetails = ({ car, whishlists }) => {
             </p>
             <button
               type="button"
-              className="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              className={`${show ? 'block' : 'hidden'} text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}
             >
               Rent Now
             </button>
