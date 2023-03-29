@@ -1,19 +1,20 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import DialogModal from '../../dialogModal';
-import { addToCart } from '../../../store/cartSlice';
+import { addToCart, updateCart } from '../../../store/cartSlice';
 import { hideDialog, showDialog } from '../../../store/DialogSlice';
 import { locationOptions } from '../../../constants';
 
-const Pickup = ({ car }) => {
+const Pickup = ({ car, drop, start, end }) => {
+  const Router = useRouter();
   const dispatch = useDispatch();
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const [dropLocation, setDropLocation] = useState('');
+  const [startDate, setStartDate] = useState(start);
+  const [endDate, setEndDate] = useState(end);
+  const [dropLocation, setDropLocation] = useState(drop);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const { cart } = useSelector((state) => ({ ...state }));
@@ -37,35 +38,48 @@ const Pickup = ({ car }) => {
   };
 
   const addToCartHandler = async () => {
-    const today = new Date();
     if (car.renting) {
+      console.log('1');
       setError(
         'This car is under renting by other people.',
       );
       return;
     }
-    if (startDate < today) {
-      setError(
-        'Please select a date not earlier than today.',
-      );
-    } else if (endDate <= startDate) {
+    if (endDate <= startDate) {
+      console.log('2');
       setError(
         'Please select drop off date later than pick up date.',
       );
+    } else {
+      console.log('3');
+      const exist = cart.cartItems.find((p) => p._id === car._id);
+      console.log('exist', exist);
+      if (exist) {
+        const newCart = cart.cartItems.map((p) => {
+          if (p._id === exist._id) {
+            console.log('mid', startDate, endDate);
+            return { ...p, pickLocation, dropLocation, startDate, endDate };
+          }
+          return p;
+        });
+        dispatch(updateCart(newCart));
+      } else {
+        await dispatch(
+          addToCart({
+            ...car,
+            pickLocation,
+            dropLocation,
+            startDate,
+            endDate,
+          }),
+        );
+      }
     }
-    dispatch(
-      addToCart({
-        ...car,
-        pickLocation,
-        dropLocation,
-        startDate,
-        endDate,
-      }),
-    );
   };
 
   return (
     <div className="w-full bg-white rounded-lg shadow my-12 mx-auto sm:max-w-3xl xl:p-0">
+      <DialogModal />
       <div className="p-4">
         <p className=" font-semibold leading-tight tracking-tight text-gray-900 sm:text-lg ">
           Add Pickup & Dropoff Location
@@ -88,7 +102,6 @@ const Pickup = ({ car }) => {
               <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 ">Pickup Location</label>
               <input
                 type="text"
-                name="title"
                 value={pickLocation}
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
               />
@@ -96,12 +109,10 @@ const Pickup = ({ car }) => {
             <div>
               <label htmlFor="brand" className="block mb-2 text-sm font-medium text-gray-900 ">Drop Off Location</label>
               <select
-                id="sorting"
-                name="sorting"
                 onChange={onDropChange}
-                defaultValue="Select drop city"
                 className=" bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
               >
+                <option selected="selected">{drop}</option>
                 {locationOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.display}
@@ -139,8 +150,9 @@ const Pickup = ({ car }) => {
               Add to Cart
             </button>
           </div>
-
         </form>
+        {error && <span className="text-red-700">{error}</span>}
+        {success && <span className="text-green-700">{success}</span>}
       </div>
     </div>
   );

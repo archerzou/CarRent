@@ -22,6 +22,9 @@ handler.get(async (req, res) => {
       steering: car.steering,
       gasoline: car.gasoline,
       images: car.images,
+      rating: car.rating,
+      numReviews: car.numReviews,
+      renting: car.renting,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

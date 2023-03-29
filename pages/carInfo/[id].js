@@ -27,7 +27,7 @@ const carInfo = ({ car, whishlists }) => {
         session ? (
           <div className="flex-col bg-gray-100 py-8 px-24">
             <CarDetails car={car} whishlists={whishlists} show={false} />
-            <Pickup car={car} />
+            <Pickup car={car} drop="" start={null} end={null} />
           </div>
 
         ) : (

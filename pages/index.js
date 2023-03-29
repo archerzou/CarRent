@@ -24,8 +24,6 @@ export async function getServerSideProps() {
   const popCars = await Car.find().sort({ numReviews: -1 }).lean();
   const recommendCars = await Car.find().sort({ rating: -1 }).lean();
 
-  console.log('hhh', popCars);
-
   return {
     props: {
       popCars: JSON.parse(JSON.stringify(popCars)),

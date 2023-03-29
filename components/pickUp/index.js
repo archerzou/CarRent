@@ -81,7 +81,6 @@ const PickUp = () => {
                 Locations
               </p>
               <select
-                id="sorting"
                 name="sorting"
                 onChange={onPickChange}
                 defaultValue="Select your city"
@@ -142,8 +141,6 @@ const PickUp = () => {
                 Locations
               </p>
               <select
-                id="sorting"
-                name="sorting"
                 onChange={onDropChange}
                 defaultValue="Select your city"
                 className=" text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
