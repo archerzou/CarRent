@@ -39,31 +39,28 @@ const Pickup = ({ car, drop, start, end }) => {
 
   const addToCartHandler = async () => {
     if (car.renting) {
-      console.log('1');
       setError(
         'This car is under renting by other people.',
       );
       return;
     }
     if (endDate <= startDate) {
-      console.log('2');
       setError(
         'Please select drop off date later than pick up date.',
       );
     } else {
-      console.log('3');
       const exist = cart.cartItems.find((p) => p._id === car._id);
-      console.log('exist', exist);
       if (exist) {
+        console.log('444');
         const newCart = cart.cartItems.map((p) => {
           if (p._id === exist._id) {
-            console.log('mid', startDate, endDate);
             return { ...p, pickLocation, dropLocation, startDate, endDate };
           }
           return p;
         });
         dispatch(updateCart(newCart));
       } else {
+        console.log('999');
         await dispatch(
           addToCart({
             ...car,

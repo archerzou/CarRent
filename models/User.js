@@ -38,31 +38,16 @@ const userSchema = new mongoose.Schema(
     },
     address: [
       {
-        firstName: {
-          type: String,
-        },
-        lastName: {
+        clientName: {
           type: String,
         },
         phoneNumber: {
           type: String,
         },
-        address1: {
-          type: String,
-        },
-        address2: {
+        address: {
           type: String,
         },
         city: {
-          type: String,
-        },
-        zipCode: {
-          type: String,
-        },
-        state: {
-          type: String,
-        },
-        country: {
           type: String,
         },
         active: {

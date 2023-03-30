@@ -14,13 +14,16 @@ handler.post(async (req, res) => {
     const { cart } = req.body;
     const cars = [];
     const user = await User.findById(req.user);
-    const existingCart = await Cart.findOne({ user: user._id });
-    if (existingCart) {
-      await existingCart.remove();
-    }
+    // const existingCart = await Cart.findOne({ user: user._id });
+    // console.log('dsadsa', existingCart);
+    // if (existingCart) {
+    //   await Cart.remove();
+    // }
+
     for (let i = 0; i < cart.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
       const dbCar = await Car.findById(cart[i]._id).lean();
+      console.log('loop', dbCar);
       const tempCar = {};
       tempCar.title = dbCar.title;
       tempCar.car = dbCar._id;
@@ -38,6 +41,7 @@ handler.post(async (req, res) => {
     for (let i = 0; i < cars.length; i += 1) {
       cartTotal += cars[i].price * calculateDays(cars[i].startDate, cars[i].endDate);
     }
+
     await new Cart({
       cars,
       cartTotal: cartTotal.toFixed(2),
