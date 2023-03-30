@@ -10,7 +10,7 @@ const cartSchema = new mongoose.Schema(
           type: ObjectId,
           ref: 'Car',
         },
-        name: {
+        title: {
           type: String,
         },
         image: {
