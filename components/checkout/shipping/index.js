@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import { FaIdCard, FaMapMarkerAlt } from 'react-icons/fa';
+import { GiPhone, GiCityCar } from 'react-icons/gi';
+
+import { IoMdArrowDropupCircle } from 'react-icons/io';
+
 import {
   changeActiveAddress,
   deleteAddress,
@@ -19,6 +25,7 @@ const initialValues = {
 const Shipping = ({ user, addresses, setAddresses }) => {
   const [shipping, setShipping] = useState(initialValues);
   const [visible, setVisible] = useState(!user?.address.length);
+  // const [visible, setVisible] = useState(!user?.address.length);
   const {
     clientName,
     phoneNumber,
@@ -50,10 +57,18 @@ const Shipping = ({ user, addresses, setAddresses }) => {
     setShipping({ ...shipping, [name]: value });
   };
 
+  const changeActiveHandler = async (id) => {
+    const res = await changeActiveAddress(id);
+    console.log('change', res);
+    setAddresses(res.addresses);
+  };
+  const deleteHandler = async (id) => {
+    const res = await deleteAddress(id);
+    setAddresses(res.addresses);
+  };
+
   const saveShippingHandler = async () => {
-    console.log('first');
     const res = await saveAddress(shipping);
-    console.log('address', res);
     setAddresses(res.addresses);
   };
 
@@ -64,6 +79,61 @@ const Shipping = ({ user, addresses, setAddresses }) => {
           <p className="font-semibold leading-tight tracking-tight text-gray-900 sm:text-2xl py-3 ">
             Shipping Information
           </p>
+
+          {addresses.map((address) => (
+            <div
+              className={`${address.active ? 'border-l-blue-600' : ''} w-full cursor-pointer shadow border-gray-200 border-2 p-3 mb-2`}
+              key={address._id}
+              onClick={() => changeActiveHandler(address._id)}
+            >
+              <div className="flex justify-between items-start">
+                <div className="flex-col justify-start">
+                  <img className="w-12 h-12" src={user.image} alt="" />
+                  <div className="flex m-3 items-center">
+                    <GiCityCar className="text-2xl" />
+                    <p className="mx-4 text-lg">{address.address}</p>
+                  </div>
+                  <div className="flex m-3 items-center">
+                    <FaMapMarkerAlt className="text-2xl" />
+                    <p className="mx-4 text-lg">{address.city}</p>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex m-3 items-center">
+                    <FaIdCard className="text-3xl" />
+                    <p className="mx-4 text-lg">{address.clientName.toUpperCase()}</p>
+                  </div>
+                  <div className="flex m-3 items-center">
+                    <GiPhone className="text-3xl" />
+                    <p className="mx-4 text-lg">{address.phoneNumber}</p>
+                  </div>
+                </div>
+                <div className="flex-col">
+                  <div
+                    className="text-xl m-3"
+                    onClick={() => deleteHandler(address._id)}
+                  >
+                    <RiDeleteBin6Line />
+                  </div>
+                  <p className="text-green-700 mt-10 text-lg">{address.active ? 'Active' : ''}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <button type="button" className="my-4 text-white bg-blue-500 font-medium rounded-lg text-sm px-5 py-2.5" onClick={() => setVisible(!visible)}>
+            {visible ? (
+              <span className="text-2xl">
+                <IoMdArrowDropupCircle />
+              </span>
+            ) : (
+              <span>
+                ADD NEW ADDRESS
+              </span>
+            )}
+          </button>
+
+          {visible && (
           <Formik
             enableReinitialize
             initialValues={{
@@ -126,6 +196,7 @@ const Shipping = ({ user, addresses, setAddresses }) => {
               </Form>
             )}
           </Formik>
+          )}
         </div>
       </div>
     </div>
