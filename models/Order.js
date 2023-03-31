@@ -52,6 +52,9 @@ const orderSchema = new mongoose.Schema(
         type: String,
       },
     },
+    paymentMethod: {
+      type: String,
+    },
     paymentResult: {
       id: String,
       status: String,
@@ -78,6 +81,9 @@ const orderSchema = new mongoose.Schema(
       ],
     },
     paidAt: {
+      type: Date,
+    },
+    deliveredAt: {
       type: Date,
     },
   },

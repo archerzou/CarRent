@@ -37,13 +37,14 @@ const Summary = ({ user, cart, paymentMethod, selectedAddress }) => {
           name="coupon"
           placeholder="Coupon number"
           onChange={applyCouponHandler}
-          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+          className="mb-4 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
         />
+        <p className="text-grap-900 text-xl"> Total : <b>{cart.cartTotal}$</b>{' '}</p>
         <button type="button" className="my-6 p-2.5 block w-full text-white bg-blue-500 font-bold rounded-lg text-xl text-center" onClick={() => placeOrderHandler()}>
           Place Order
         </button>
       </div>
-
+      {error && <span className="text-red-600">{error}</span>}
     </div>
   );
 };
