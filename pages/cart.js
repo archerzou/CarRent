@@ -3,6 +3,8 @@ import { useSession, signIn } from 'next-auth/react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
+import db from '../utils/db';
+import Car from '../models/Car';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import Empty from '../components/cart/empty';
@@ -12,7 +14,7 @@ import CartHeader from '../components/cart/cartHeader';
 import { calculateDays } from '../utils/calculateDays';
 import { saveCart } from '../requests/user';
 
-const Cart = () => {
+const Cart = ({ locations }) => {
   const Router = useRouter();
   const { data: session } = useSession();
   const { cart } = useSelector((state) => ({ ...state }));
@@ -56,6 +58,7 @@ const Cart = () => {
                         key={car._id}
                         selected={selected}
                         setSelected={setSelected}
+                        locations={locations}
                       />
                     ))}
                   </div>
@@ -78,3 +81,14 @@ const Cart = () => {
 };
 
 export default Cart;
+
+export async function getServerSideProps() {
+  db.connectDb();
+  const locations = await Car.find().distinct('location').lean();
+
+  return {
+    props: {
+      locations: JSON.parse(JSON.stringify(locations)),
+    },
+  };
+}

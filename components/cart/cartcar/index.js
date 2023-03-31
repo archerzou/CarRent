@@ -6,11 +6,10 @@ import Pickup from '../pickup';
 import { updateCart } from '../../../store/cartSlice';
 import { calculateDays } from '../../../utils/calculateDays';
 
-const CartCar = ({ car, selected, setSelected }) => {
+const CartCar = ({ car, selected, setSelected, locations }) => {
   const { cart } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
   const [active, setActive] = useState();
-  console.log('active', active);
   useEffect(() => {
     const check = selected.find((p) => p._id === car._id);
     setActive(check);
@@ -59,7 +58,7 @@ const CartCar = ({ car, selected, setSelected }) => {
         </div>
       </div>
 
-      <Pickup car={car} drop={car.dropLocation} start={Date.parse(car.startDate)} end={Date.parse(car.endDate)} />
+      <Pickup car={car} drop={car.dropLocation} start={Date.parse(car.startDate)} end={Date.parse(car.endDate)} locations={locations} />
       <div className="grid justify-center">
         <p className="mx-auto text-lg font-bold text-blue-600 items-end">Rental Fee</p>
         <p className="mx-auto text-lg font-bold text-gray-900 items-end">USD {(car.price * rentDays).toFixed(2)}$</p>

@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Link from 'next/link';
 
 import DialogModal from '../../dialogModal';
 import { addToCart, updateCart } from '../../../store/cartSlice';
-import { hideDialog, showDialog } from '../../../store/DialogSlice';
-import { locationOptions } from '../../../constants';
+import { hideDialog } from '../../../store/DialogSlice';
 
-const Pickup = ({ car, drop, start, end }) => {
-  const Router = useRouter();
+const Pickup = ({ car, drop, start, end, locations }) => {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(start);
   const [endDate, setEndDate] = useState(end);
@@ -51,7 +49,6 @@ const Pickup = ({ car, drop, start, end }) => {
     } else {
       const exist = cart.cartItems.find((p) => p._id === car._id);
       if (exist) {
-        console.log('444');
         const newCart = cart.cartItems.map((p) => {
           if (p._id === exist._id) {
             return { ...p, pickLocation, dropLocation, startDate, endDate };
@@ -60,7 +57,6 @@ const Pickup = ({ car, drop, start, end }) => {
         });
         dispatch(updateCart(newCart));
       } else {
-        console.log('999');
         await dispatch(
           addToCart({
             ...car,
@@ -110,9 +106,9 @@ const Pickup = ({ car, drop, start, end }) => {
                 className=" bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
               >
                 <option selected="selected">{drop}</option>
-                {locationOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.display}
+                {locations?.map((option, i) => (
+                  <option key={i} value={option}>
+                    {option}
                   </option>
                 ))}
               </select>
@@ -139,14 +135,16 @@ const Pickup = ({ car, drop, start, end }) => {
               />
             </div>
           </div>
-          <div className="flex justify-end my-4">
-            <button
-              type="submit"
-              className="mr-0 text-white bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-            >
-              Add to Cart
-            </button>
-          </div>
+          <Link href="/cart">
+            <div className="flex justify-end my-4">
+              <button
+                type="submit"
+                className="mr-0 text-white bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </Link>
         </form>
         {error && <span className="text-red-700">{error}</span>}
         {success && <span className="text-green-700">{success}</span>}

@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       // image url to cloudinary, current just use a random avatar
       default:
-        'https://res.cloudinary.com/dmhcnhtng/image/upload/v1664642478/992490_b0iqzq.png',
+        'https://res.cloudinary.com/kevinzou/image/upload/v1680252619/image/65343975_ucc8ys.jpg',
     },
     emailVerified: {
       type: Boolean,

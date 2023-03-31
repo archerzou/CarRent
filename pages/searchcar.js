@@ -1,10 +1,10 @@
 import React from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Pagination } from '@mui/material';
 
 import db from '../utils/db';
 import Car from '../models/Car';
+import { randomize } from '../utils/arrays_utils';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import CarCard from '../components/carCard';
@@ -13,8 +13,9 @@ import SearchBar from '../components/searchBar';
 import CarTypeFilter from '../components/carTypeFilter';
 import CapacityFilter from '../components/capacityFilter';
 import PriceFilter from '../components/priceFilter';
+import SortFilter from '../components/sortFilter';
 
-const SearchCar = ({ cars, carTypes, capacities, prices, paginationCount }) => {
+const SearchCar = ({ cars, carTypes, capacities, prices, locations, paginationCount, totalCars }) => {
   const router = useRouter();
   const maxPrice = Math.max(...prices);
   const minPrice = Math.min(...prices);
@@ -26,6 +27,7 @@ const SearchCar = ({ cars, carTypes, capacities, prices, paginationCount }) => {
     price,
     steering,
     gasoline,
+    sort,
     page,
   }) => {
     const path = router.pathname;
@@ -37,6 +39,7 @@ const SearchCar = ({ cars, carTypes, capacities, prices, paginationCount }) => {
     if (steering) query.steering = steering;
     if (gasoline) query.gasoline = gasoline;
     if (page) query.page = page;
+    if (sort) query.sort = sort;
 
     router.push({
       pathname: path,
@@ -60,6 +63,14 @@ const SearchCar = ({ cars, carTypes, capacities, prices, paginationCount }) => {
   const priceHandler = (price) => {
     filter({ price });
   };
+  const sortHandler = (sort) => {
+    if (sort === '') {
+      filter({ sort: {} });
+    } else {
+      filter({ sort });
+    }
+  };
+
   const pageHandler = (e, page) => {
     filter({ page });
   };
@@ -133,7 +144,11 @@ const SearchCar = ({ cars, carTypes, capacities, prices, paginationCount }) => {
           </div>
         </div>
         <div className="flex-col mx-auto px-8 pb-2">
-          <PickUp />
+          <PickUp data={locations} />
+          <div className="flex justify-between my-2 items-center">
+            <p className="text-gray-900 text-lg">Total Cars {totalCars}</p>
+            <SortFilter sortHandler={sortHandler} />
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 items-center justify-center">
             {cars.map((car) => (
               <CarCard car={car} key={car._id} />
@@ -172,6 +187,7 @@ export async function getServerSideProps(ctx) {
   // -----------------------------------
   const searchQuery = query.search || '';
   const priceQuery = query.price || '';
+  const sortQuery = query.sort || '';
   const pageSize = 9;
   const page = query.page || 1;
   // -----------------------------------
@@ -195,7 +211,12 @@ export async function getServerSideProps(ctx) {
       brand: {
         $regex: searchQuery,
         $options: 'i',
-      } }] }
+      } },
+    { location: {
+      $regex: searchQuery,
+      $options: 'i',
+    } },
+    ] }
     : {};
 
   const carType = carTypeQuery && carTypeQuery !== ''
@@ -224,8 +245,22 @@ export async function getServerSideProps(ctx) {
     }
     : {};
 
+  const sort = sortQuery === ''
+    ? {}
+    : sortQuery === 'popular'
+      ? { rating: -1 }
+      : sortQuery === 'newest'
+        ? { createdAt: -1 }
+        : sortQuery === 'topReviewed'
+          ? { numReviews: -1 }
+          : sortQuery === 'priceHighToLow'
+            ? { price: -1 }
+            : sortQuery === 'priceLowToHigh'
+              ? { price: 1 }
+              : {};
+
   db.connectDb();
-  const cars = await Car.find({
+  const carsDb = await Car.find({
     ...search,
     ...carType,
     ...capacity,
@@ -233,11 +268,13 @@ export async function getServerSideProps(ctx) {
   })
     .skip(pageSize * (page - 1))
     .limit(pageSize)
-    .sort({ createdAt: -1 })
+    .sort(sort)
     .lean();
+  const cars = sortQuery && sortQuery !== '' ? carsDb : randomize(carsDb);
   const carTypes = await Car.find().distinct('carType').lean();
   const capacities = await Car.find().distinct('capacity').lean();
   const prices = await Car.find().distinct('price').lean();
+  const locations = await Car.find().distinct('location').lean();
   const totalCars = await Car.countDocuments({
     ...search,
     ...carType,
@@ -251,7 +288,9 @@ export async function getServerSideProps(ctx) {
       carTypes,
       capacities,
       prices,
+      locations,
       paginationCount: Math.ceil(totalCars / pageSize),
+      totalCars,
     },
   };
   // try {

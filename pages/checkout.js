@@ -9,6 +9,7 @@ import Footer from '../components/footer';
 import Shipping from '../components/checkout/shipping';
 import Cars from '../components/checkout/cars';
 import Payment from '../components/checkout/payment';
+import Summary from '../components/checkout/summary';
 
 const Checkout = ({ cart, user }) => {
   const [addresses, setAddresses] = useState(user?.address || []);
@@ -27,7 +28,7 @@ const Checkout = ({ cart, user }) => {
     <>
       <Header />
       <div className="flex bg-gray_2 py-4 sm:p-4 mx-auto">
-        <div className="flex-col">
+        <div className="flex-col mx-6">
           <Shipping
             user={user}
             addresses={addresses}
@@ -35,7 +36,22 @@ const Checkout = ({ cart, user }) => {
           />
           <Cars cart={cart} />
         </div>
-        <Payment />
+        <div className="flex-col items-center mx-auto w-1/4">
+          <div className="w-full bg-white rounded-lg shadow my-8 xl:p-0">
+            <Payment
+              paymentMethod={paymentMethod}
+              setPaymentMethod={setPaymentMethod}
+            />
+            <hr className="my-4" />
+            <Summary
+              user={user}
+              cart={cart}
+              paymentMethod={paymentMethod}
+              selectedAddress={selectedAddress}
+            />
+          </div>
+        </div>
+
       </div>
 
       <Footer />

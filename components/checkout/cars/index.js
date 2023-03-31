@@ -1,12 +1,11 @@
 import React from 'react';
 import dateFormat from 'dateformat';
-import { FaStaylinked } from 'react-icons/fa';
 
 import { calculateDays } from '../../../utils/calculateDays';
 
 const Cars = ({ cart }) => (
   <div className="flex flex-col items-center justify-center bg-gray_2  mx-auto">
-    <div className="w-full bg-white rounded-lg shadow my-8 sm:max-w-6xl xl:p-0">
+    <div className="w-full bg-white rounded-lg shadow sm:max-w-6xl xl:p-0">
       <div className="p-4">
         <div className="flex-col">
           <div className="flex justify-between items-center">

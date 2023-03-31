@@ -20,3 +20,26 @@ export const locationOptions = [
   { value: 'Houston', display: 'Houston' },
   { value: 'Dallas', display: 'Dallas' },
 ];
+
+export const sortingOptions = [
+  {
+    name: 'Most Popular',
+    value: 'popular',
+  },
+  {
+    name: 'New Arrivals',
+    value: 'newest',
+  },
+  {
+    name: 'Top Reviewed',
+    value: 'topReviewed',
+  },
+  {
+    name: 'Price (low to high)',
+    value: 'priceLowToHight',
+  },
+  {
+    name: 'Price (high to low)',
+    value: 'priceHighToLow',
+  },
+];

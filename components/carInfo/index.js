@@ -71,7 +71,6 @@ const CarInfo = () => {
       });
 
       uploadedImages = await uploadCarImages(formData);
-      console.log('here', uploadedImages);
     }
 
     try {
@@ -79,7 +78,6 @@ const CarInfo = () => {
         ...car,
         images: uploadedImages,
       });
-      console.log('car', data);
       setLoading(false);
       toast.success(data.message, {
         hideProgressBar: true, autoClose: 3000, type: 'success',
