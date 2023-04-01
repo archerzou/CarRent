@@ -135,16 +135,14 @@ const Pickup = ({ car, drop, start, end, locations }) => {
               />
             </div>
           </div>
-          <Link href="/cart">
-            <div className="flex justify-end my-4">
-              <button
-                type="submit"
-                className="mr-0 text-white bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
-                Add to Cart
-              </button>
-            </div>
-          </Link>
+          <div className="flex justify-end my-4">
+            <button
+              type="submit"
+              className="mr-0 text-white bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+              Add to Cart
+            </button>
+          </div>
         </form>
         {error && <span className="text-red-700">{error}</span>}
         {success && <span className="text-green-700">{success}</span>}

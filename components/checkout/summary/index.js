@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
-import { Form, Formik } from 'formik';
 
-const Summary = ({ user, cart, paymentMethod, selectedAddress }) => {
+const Summary = ({ cart, paymentMethod, selectedAddress }) => {
   const [error, setError] = useState('');
   const applyCouponHandler = () => {
     console.log('apply coupon');
@@ -18,7 +17,7 @@ const Summary = ({ user, cart, paymentMethod, selectedAddress }) => {
         return;
       }
       const { data } = await axios.post('/api/order/create', {
-        products: cart.products,
+        cars: cart.cars,
         shippingAddress: selectedAddress,
         paymentMethod,
         total: cart.cartTotal,

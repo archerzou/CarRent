@@ -16,7 +16,6 @@ import CustomInput from '../components/customInput';
 import DotLoaderSpinner from '../components/loaders/dotLoader';
 
 const signin = ({ providers, callbackUrl, csrfToken }) => {
-  console.log(providers);
   const initialvalues = {
     loginEmail: '',
     loginPassword: '',

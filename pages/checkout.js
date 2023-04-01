@@ -16,14 +16,14 @@ const Checkout = ({ cart, user }) => {
   const [paymentMethod, setPaymentMethod] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
 
-  // useEffect(() => {
-  //   const check = addresses.find((ad) => ad.active === true);
-  //   if (check) {
-  //     setSelectedAddress(check);
-  //   } else {
-  //     setSelectedAddress('');
-  //   }
-  // }, [addresses]);
+  useEffect(() => {
+    const check = addresses.find((ad) => ad.active === true);
+    if (check) {
+      setSelectedAddress(check);
+    } else {
+      setSelectedAddress('');
+    }
+  }, [addresses]);
   return (
     <>
       <Header />
@@ -44,7 +44,6 @@ const Checkout = ({ cart, user }) => {
             />
             <hr className="my-4" />
             <Summary
-              user={user}
               cart={cart}
               paymentMethod={paymentMethod}
               selectedAddress={selectedAddress}

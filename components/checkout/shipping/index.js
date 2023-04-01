@@ -25,7 +25,6 @@ const initialValues = {
 const Shipping = ({ user, addresses, setAddresses }) => {
   const [shipping, setShipping] = useState(initialValues);
   const [visible, setVisible] = useState(!user?.address.length);
-  // const [visible, setVisible] = useState(!user?.address.length);
   const {
     clientName,
     phoneNumber,
@@ -80,15 +79,14 @@ const Shipping = ({ user, addresses, setAddresses }) => {
             Shipping Information
           </p>
 
-          {addresses.map((address) => (
+          {addresses?.map((address) => (
             <div
               className={`${address.active ? 'border-l-blue-600' : ''} w-full cursor-pointer shadow border-gray-200 border-2 p-3 mb-2`}
               key={address._id}
-              onClick={() => changeActiveHandler(address._id)}
             >
               <div className="flex justify-between items-start">
                 <div className="flex-col justify-start">
-                  <img className="w-12 h-12" src={user.image} alt="" />
+                  <img className="w-12 h-12" src={user.image} alt="" onClick={() => changeActiveHandler(address._id)} />
                   <div className="flex m-3 items-center">
                     <GiCityCar className="text-2xl" />
                     <p className="mx-4 text-lg">{address.address}</p>

@@ -1,7 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import axios from 'axios';
 
-const Form = () => {
+const Form = ({ total, orderId }) => {
+  const [error, setError] = useState('');
   const stripe = useStripe();
   const elements = useElements();
   const cardOptions = {
@@ -27,17 +29,35 @@ const Form = () => {
       type: 'card',
       card: elements.getElement(CardElement),
     });
+    if (!error) {
+      try {
+        const { id } = paymentMethod;
+        const res = await axios.post(`/api/order/${orderId}/payWithStripe`, {
+          amount: total,
+          id,
+        });
+        console.log(res);
+        if (res.data.success) {
+          window.location.reload(false);
+        }
+      } catch (error) {
+        setError(error);
+      }
+    } else {
+      setError(error.message);
+    }
   };
   return (
-    <div className="mx-6 w-1/3 bg-white rounded-lg shadow my-8 xl:p-0">
+    <div>
       <form onSubmit={handleSubmit}>
         <CardElement options={cardOptions} />
         <button
           type="submit"
-          className="w-full mx-auto p-8 text-white bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          className="my-6 p-2.5 block w-full text-white bg-blue-500 font-semibold rounded-lg text-xl text-center"
         >
           PAY
         </button>
+        {error && <span className="text-red-500">{error}</span>}
       </form>
     </div>
   );
