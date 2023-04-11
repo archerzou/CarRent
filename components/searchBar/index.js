@@ -7,9 +7,9 @@ const SearchBar = ({ searchHandler }) => {
   const [query, setQuery] = useState(router.query.search || '');
   const handleSearch = (e) => {
     e.preventDefault();
-    if (router.pathname !== '/browse') {
+    if (router.pathname !== '/searchcar') {
       if (query.length > 1) {
-        router.push(`/browse?search=${query}`);
+        router.push(`/searchcar?search=${query}`);
       }
     } else {
       searchHandler(query);
@@ -17,23 +17,19 @@ const SearchBar = ({ searchHandler }) => {
   };
   return (
     <form
-      className="items-center top-3 sm: hidden"
+      className="items-center mt-8"
       onSubmit={(e) => handleSearch(e)}
     >
       <div className="relative w-full">
         <input
           type="text"
-          placeholder="Search something here"
-          className="block bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg w-full pl-6 p-2.5"
+          placeholder="Search brand or title"
+          className="block bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg w-full pl-8 p-2.5"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button
-          type="submit"
-          className="absolute top-0 right-0 p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700"
-        >
-          <RiSearch2Line className="w-5 h-5" />
-        </button>
+        <RiSearch2Line className="text-gray-500 absolute top-3 left-3 flex items-center pointer-events-none" />
+
       </div>
 
     </form>

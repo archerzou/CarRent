@@ -1,76 +1,72 @@
 import React from 'react';
+import Link from 'next/link';
 import { AiFillHeart } from 'react-icons/ai';
 import { FaGasPump } from 'react-icons/fa';
 import { GiSteeringWheel } from 'react-icons/gi';
 import { BsFillPeopleFill } from 'react-icons/bs';
 
-// exmaple data
-const car = {
-  name: 'Koenigsegg',
-  category: 'Sport',
-  image: '/car/png',
-  gas: '90L',
-  type: 'Manual',
-  people: 2,
-  price: '99.00', // maybe change to number
-};
-
-const CarCard = () => {
-  const { name, category, image, gas, type, people, price } = car;
+const CarCard = ({ car }) => {
+  const { title, carType, images, gasoline, steering, capacity, price } = car;
 
   return (
-    <div className="ss:min-w-[304px] min-w-[327px] flex flex-col sm:gap-y-6 gap-y-2 justify-between sm:p-6 p-4 bg-white rounded-lg">
-      <div className="flex justify-between items-start">
-        <div>
-          <p className="text-gray-900 font-bold sm:text-xl text-base leading-6">
-            {name}
-          </p>
-          <p className="text-gray-400 font-bold sm:text-sm text-xs leading-4">
-            {category}
-          </p>
-        </div>
-        <AiFillHeart className="p-0.5 sm:w-5 sm:h-5 w-3.5 h-3.5 text-red-700" />
-      </div>
-      <div className="flex sm:flex-col justify-between sm: flex-start">
-        <div>
-          <img className="py-7 sm:w-[248px] w-[160px]" src="./car.png" alt="car" />
-          <div className="relative mb-[-56px] bottom-[70px] bg-gradient-to-b from-transparent to-white-0 h-14" />
-        </div>
-        <div className="flex sm:justify-between justify-start gap-y-2 flex-col sm:flex-row ">
-          <div className="flex gap-1.5 items-center">
-            <FaGasPump className="sm:w-5 w-3.5" />
-            <p className="text-gray-400 sm:text-sm text-xs leading-4 font-medium">
-              {gas}
+    <div className="w-full max-w-lg bg-white border border-gray-200 rounded-lg shadow sm:p-6 p-4">
+      <div>
+        <div className="flex justify-between items-start">
+          <div>
+            <Link href={`/car/${car._id}`}>
+              <p className="text-gray-900 font-bold sm:text-xl text-base cursor-pointer">
+                {title}
+              </p>
+            </Link>
+
+            <p className="text-gray-400 font-bold sm:text-sm text-xs">
+              {carType}
             </p>
           </div>
-          <div className="flex gap-1.5 items-center">
-            <GiSteeringWheel className="sm:w-5 w-3.5" />
-            <p className="text-gray-400 sm:text-sm text-xs leading-4 font-medium">
-              {type}
-            </p>
+          <AiFillHeart className="p-0.5 sm:w-6 sm:h-6 w-3.5 h-3.5 text-gray-400" />
+        </div>
+        <div className="flex-col">
+          <Link href={`/car/${car._id}`}>
+            <img className="py-6 rounded-lg  cursor-pointer " src={images[0].url} alt="car" />
+          </Link>
+          <div className="flex justify-between">
+            <div className="flex gap-1.5 items-center text-gray-500">
+              <FaGasPump className="sm:w-5 w-3.5 " />
+              <p className=" sm:text-sm text-xs leading-4 font-medium">
+                {gasoline}L
+              </p>
+            </div>
+            <div className="flex gap-1.5 items-center text-gray-500">
+              <GiSteeringWheel className="sm:w-5 w-3.5" />
+              <p className=" sm:text-sm text-xs leading-4 font-medium">
+                {steering}
+              </p>
+            </div>
+            <div className="flex gap-1.5 items-center text-gray-500">
+              <BsFillPeopleFill className="sm:w-5 w-3.5" />
+              <p className=" sm:text-sm text-xs leading-4 font-medium">
+                {capacity} People
+              </p>
+            </div>
           </div>
-          <div className="flex gap-1.5 items-center">
-            <BsFillPeopleFill className="sm:w-5 w-3.5" />
-            <p className="text-gray-400 sm:text-sm text-xs leading-4 font-medium">
-              {people} People
+          <div className="flex pt-6 justify-between items-center">
+            <p className="text-gray-900 font-bold sm:text-xl">
+              ${price}/
+              <span className="text-gray-400 sm:text-sm text-x">
+                day
+              </span>
             </p>
+            <Link href={`/carInfo/${car._id}`}>
+              <button
+                type="button"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
+                Rent Now
+              </button>
+            </Link>
+
           </div>
         </div>
-      </div>
-      <div className="flex justify-between items-center">
-        <p className="text-gray-900 font-bold sm:text-xl  leading-6">
-          ${price}/
-          <span className="text-gray-400 sm:text-sm text-xs leading-4">
-            day
-          </span>
-        </p>
-        {/* // TODO: later we can change this to a link */}
-        <button
-          type="button"
-          className="button sm:w-[116px] w-[100px] bg-blue-500 py-2.5 px-5 rounded text-white font-semibold sm:text text-xs leading-5"
-        >
-          Rent Now
-        </button>
       </div>
     </div>
   );

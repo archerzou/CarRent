@@ -21,7 +21,7 @@ const initialState = {
   brand: '',
   description: '',
   price: 0,
-  capacity: 0,
+  capacity: '',
   carType: '',
   location: '',
   steering: '',
@@ -49,7 +49,7 @@ const CarInfo = () => {
     brand: Yup.string().required('Please add a brand'),
     description: Yup.string().required('Please add a description'),
     price: Yup.number().required('Please add a price number'),
-    capacity: Yup.number().required('Please add a capacity  number'),
+    capacity: Yup.string().required('Please add a capacity  number'),
     carType: Yup.string().required('Please select a car type.'),
     location: Yup.string().required('Please select your location.'),
     steering: Yup.string().required('Please select steering with Manual or Electric.'),
@@ -71,7 +71,6 @@ const CarInfo = () => {
       });
 
       uploadedImages = await uploadCarImages(formData);
-      console.log('here', uploadedImages);
     }
 
     try {
@@ -79,7 +78,6 @@ const CarInfo = () => {
         ...car,
         images: uploadedImages,
       });
-      console.log('car', data);
       setLoading(false);
       toast.success(data.message, {
         hideProgressBar: true, autoClose: 3000, type: 'success',
@@ -180,7 +178,7 @@ const CarInfo = () => {
                     <div>
                       <label htmlFor="capacity" className="block mb-2 text-sm font-medium text-gray-900 ">Capacity (Person)</label>
                       <CustomInput
-                        type="number"
+                        type="text"
                         name="capacity"
                         onChange={handleChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"

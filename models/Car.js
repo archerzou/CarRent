@@ -1,5 +1,31 @@
 import mongoose from 'mongoose';
 
+const { ObjectId } = mongoose.Schema;
+
+const reviewSchema = new mongoose.Schema(
+  {
+    reviewBy: {
+      type: ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    rating: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    review: {
+      type: String,
+      required: true,
+    },
+    images: [],
+    likes: [],
+  },
+  {
+    timestamps: true,
+  },
+);
+
 const carSchema = new mongoose.Schema(
   {
     title: {
@@ -19,7 +45,7 @@ const carSchema = new mongoose.Schema(
       required: [true, 'price is required'],
     },
     capacity: {
-      type: Number,
+      type: String,
       required: [true, 'capacity is required'],
     },
     carType: {
@@ -39,6 +65,22 @@ const carSchema = new mongoose.Schema(
       required: [true, 'gasoline is required'],
     },
     images: [],
+    reviews: [reviewSchema],
+    rating: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    numReviews: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    renting: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: true,

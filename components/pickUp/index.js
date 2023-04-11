@@ -2,14 +2,6 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const locationOptions = [
-  { value: 'Chichago', display: 'Chichago' },
-  { value: 'Sealte', display: 'Sealte' },
-  { value: 'New York', display: 'New York' },
-  { value: 'Houston', display: 'Houston' },
-  { value: 'Dallas', display: 'Dallas' },
-];
-
 const timeOptions = [
   { value: '9:00 am', display: '9:00 am' },
   { value: '12:00 am', display: '12:00 am' },
@@ -18,7 +10,7 @@ const timeOptions = [
   { value: '21:00 pm', display: '21:00 pm' },
 ];
 
-const PickUp = () => {
+const PickUp = ({ data }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [pickLocation, setPicklLocation] = useState('');
@@ -81,15 +73,15 @@ const PickUp = () => {
                 Locations
               </p>
               <select
-                id="sorting"
                 name="sorting"
                 onChange={onPickChange}
                 defaultValue="Select your city"
-                className=" text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
+                className=" text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
               >
-                {locationOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.display}
+                <option selected="selected">{}</option>
+                {data.map((option, i) => (
+                  <option key={i} value={option}>
+                    {option}
                   </option>
                 ))}
               </select>
@@ -142,15 +134,14 @@ const PickUp = () => {
                 Locations
               </p>
               <select
-                id="sorting"
-                name="sorting"
                 onChange={onDropChange}
                 defaultValue="Select your city"
                 className=" text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
               >
-                {locationOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.display}
+                <option selected="selected">{}</option>
+                {data.map((option, i) => (
+                  <option key={i} value={option}>
+                    {option}
                   </option>
                 ))}
               </select>

@@ -34,7 +34,7 @@ const DialogModal = ({ type }) => {
         fullWidth
       >
         <DialogTitle
-          className={`text-white p-2 border-b-2 bg-red-400 ${!test ? 'bg-green-500' : ''}`}
+          className={`text-white p-2 border-b-2 ${test ? 'bg-red-500' : 'bg-green-500 '}`}
         >
           {dialog.header}
         </DialogTitle>
