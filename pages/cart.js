@@ -52,7 +52,7 @@ const Cart = ({ locations }) => {
               <div className="mx-auto justify-center px-6 gap-8 md:flex md:space-x-6 xl:px-0">
                 <div className="rounded-lg w-full">
                   <div className="flex-col bg-gray-100 py-4 px-24">
-                    {cart.cartItems.map((car) => (
+                    {cart.cartItems?.map((car) => (
                       <CartCar
                         car={car}
                         key={car._id}
